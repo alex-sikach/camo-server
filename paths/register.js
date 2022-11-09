@@ -3,7 +3,11 @@ const bcrypt = require("bcryptjs");
 
 const register = async (req, res) => {
     try {
-        if(req.headers.cookie) {
+        const headers = req.headers
+        if(
+            headers.cookie?.includes('session')
+            && headers?.cookie[ headers?.cookie.indexOf('session')+7 ] === '='
+        ) {
             return res.send('Log out first')
         }
         const {

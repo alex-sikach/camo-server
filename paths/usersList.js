@@ -3,7 +3,10 @@ const pool = require('../pool')
 const getUsers = async (req, res) => {
     try {
         const headers = req.headers
-        if(headers.cookie) {
+        if(
+            headers.cookie?.includes('session')
+            && headers?.cookie[ headers?.cookie.indexOf('session')+7 ] === '='
+        ) {
             const {start} = req.params;
             let {limit} = req.params;
             //check if the limit more than 10 users

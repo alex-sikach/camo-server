@@ -3,7 +3,10 @@ const pool = require('../pool')
 const deleteAccount = async (req, res) => {
     try {
         const headers = req.headers
-        if(headers.cookie) {
+        if(
+            headers.cookie?.includes('session')
+            && headers?.cookie[ headers?.cookie.indexOf('session')+7 ] === '='
+        ) {
             const sessionId = headers.cookie.split('=')[1]
             const {username} = (await pool?.query(
                 'SELECT username FROM sessions WHERE id = $1',
