@@ -23,6 +23,9 @@ app.listen(port, async () => {
     try {
         console.log(`server has started on port ${port}`)
         await pool?.query(
+            'DELETE FROM sessions'
+        );
+        await pool?.query(
             'ALTER SEQUENCE users_id_seq RESTART'
         );
     } catch (e) {
