@@ -4,7 +4,15 @@ const {v4: randomSessionId} = require("uuid");
 
 const login = async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const headers = req.headers
+        if(headers.hasOwnProperty('cookie')) {
+            if(headers.cookie.includes('session')) {
+                if (headers.cookie[headers.cookie.indexOf('session') + 7] === '=') {
+                    return res.send('Already logged in')
+                }
+            }
+        }
+        const {username, password} = req.body;
         const user = (await pool?.query(
             'SELECT id, password FROM users WHERE username = $1',
             [username]
